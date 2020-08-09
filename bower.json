@@ -1,0 +1,14 @@
+{
+  "name": "liveball",
+  "description": "",
+  "main": "",
+  "authors": [
+    "Mehmet Halis <mehmethaliscicek@gmail.com>"
+  ],
+  "license": "MIT",
+  "homepage": "https://github.com/mehmethalis/liveBall",
+  "dependencies": {
+    "angular": "^1.8.0",
+    "semantic": "^2.4.1"
+  }
+}
