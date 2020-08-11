@@ -4,34 +4,23 @@ block content
    div(ng-controller="indexController",ng-init="init()")
      .ui.one.column.stackable.center.aligned.page.grid.margin-30
       .column.twelve.wide
-        .ui.stacked.segment.gameArea
-          .circle.blue(style='left:150px; top:100px')
+        .ui.stacked.segment.gameArea(ng-click="onClickPlayer($event)")
+
+          .circle(ng-repeat="player in players",ng-style="{'left':player.position.x+'px','top':player.position.y+'px'}",id="{{player.id}}",class="{{player.color}}")
             .relative
-              span.name Mehmet
+              span.name {{player.userName}}
               |                     
-              .message Selam
-          |             
-          .circle.green(style='left:300px; top:100px')
-            .relative
-              span.name Alp
-              |                     
-              .message selam nas&imath;ls&imath;n :)
-          |             
-          .circle.red(style='left:350px; top:300px')
-            .relative
-              span.name Joe
-              |                     
-              .message this is awesome
-        |         
+              .message 
+
         .ui.items.chat
           .item(ng-repeat="message in messages")
             .content(ng-if="!message.type.code")
               span [Server:] &nbsp;
               a.header.name {{message.username}} &nbsp;                     
               .description.message(ng-if="!message.type.message")
-                | Ayrıldı. 
+                | Joined. 
               .description.message(ng-if="message.type.message")
-                | Katıldı.    
+                | Left.    
         .ui.action.input.fluid
           input(type='text', placeholder='Type here...')
           |             
