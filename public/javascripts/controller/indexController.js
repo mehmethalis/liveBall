@@ -12,6 +12,18 @@ app.controller('indexController', ['$scope', ($scope) => {
             return false;
         }
 
+
+
+        function showBubble(id, message) {
+            $('#' + id).find('.message').show().html(message);
+
+            setTimeout(() => {
+                $('#' + id).find('.message').hide();
+
+            }, 2000);
+
+        }
+
         function initSocket(userName) {
 
             const socket = io.connect('http://localhost:3000');
@@ -37,6 +49,11 @@ app.controller('indexController', ['$scope', ($scope) => {
 
                     $scope.messages.push(messageData);
                     $scope.players[data.id] = data;
+                    setTimeout(() => {
+                        const element = document.getElementById('chat-area');
+                        element.scrollTop = element.scrollHeight;
+
+                    });
                     $scope.$apply();
                 });
 
@@ -50,11 +67,28 @@ app.controller('indexController', ['$scope', ($scope) => {
                     }
                     $scope.messages.push(messageData);
                     delete $scope.players[data.id];
+                    setTimeout(() => {
+                        const element = document.getElementById('chat-area');
+                        element.scrollTop = element.scrollHeight;
+
+                    });
                     $scope.$apply();
                 });
 
                 socket.on('animate', (data) => {
                     $('#' + data.socketId).animate({ 'left': data.x, 'top': data.y });
+                });
+
+                socket.on('newMessage', (data) => {
+                    $scope.messages.push(data);
+                    $scope.$apply();
+
+                    showBubble(data.socketId, data.text);
+                    setTimeout(() => {
+                        const element = document.getElementById('chat-area');
+                        element.scrollTop = element.scrollHeight;
+
+                    });
                 });
 
 
@@ -71,6 +105,29 @@ app.controller('indexController', ['$scope', ($scope) => {
                         $('#' + socket.id).animate({ 'left': x, 'top': y });
                         animate = false;
                     }
+                };
+
+                $scope.newMessage = () => {
+                    let message = $scope.message;
+                    const messageData = {
+                        type: {
+                            code: 1, // server or user message
+                        },
+                        username: userName,
+                        text: message
+                    };
+
+                    $scope.messages.push(messageData);
+                    $scope.message = '';
+
+                    socket.emit('newMessage', messageData);
+                    showBubble(socket.id, message);
+
+                    setTimeout(() => {
+                        const element = document.getElementById('chat-area');
+                        element.scrollTop = element.scrollHeight;
+
+                    });
                 };
 
 

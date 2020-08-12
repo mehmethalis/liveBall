@@ -34,6 +34,11 @@ io.on('connection', (socket) => {
 
     });
 
+    socket.on('newMessage', (data) => {
+        const messageData = Object.assign(data, { socketId: socket.id });
+        socket.broadcast.emit('newMessage', messageData);
+    });
+
 });
 
 module.exports = socketApi;
