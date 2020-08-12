@@ -3,7 +3,6 @@ app.controller('indexController', ['$scope', ($scope) => {
     $scope.messages = [];
     $scope.players = {};
 
-
     $scope.init = () => {
         const userName = prompt('please enter username');
         if (userName) {
@@ -26,7 +25,7 @@ app.controller('indexController', ['$scope', ($scope) => {
 
         function initSocket(userName) {
 
-            const socket = io.connect('http://localhost:3000');
+            const socket = io.connect('https://live-ball.herokuapp.com/');
             socket.on('connect', () => {
                 console.log('connection success');
                 socket.emit('newUser', { userName: userName });
